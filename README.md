@@ -50,13 +50,18 @@ Cursor discovers OAuth from the gateway’s `/.well-known/oauth-*` metadata. Pre
 .cursor-plugin/plugin.json   # Cursor Plugin manifest (marketplace)
 plugin.json                  # Agent Plugins manifest (portable)
 mcp.json / .mcp.json         # Remote Streamable HTTP MCP (OAuth)
-rules/cuebank.mdc            # alwaysApply notes-first rule
+rules/cuebank.mdc            # alwaysApply notes-first rule (ships with install)
 assets/logo.png              # 512×512
+experimental-hooks/          # NOT installed — host-broken sessionStart backup
 README.md
 LICENSE
 ```
 
-**Hooks are not included.** An experimental `sessionStart` force-inject backup exists elsewhere in the CueBank monorepo but is not proven end-to-end (host often drops `additional_context`). The alwaysApply rule is the primary path.
+The notes-first rule ships in `rules/cuebank.mdc`. Buyers install the plugin and sign in. They do not paste a second copy of that rule, and the CueBank Connection page does not ask them to.
+
+This folder (`apps/mcp-gateway/cursor-plugin/` in the CueBank monorepo) is the source of truth. The public repo `https://github.com/Viss007/cuebank-cursor-plugin` should pick up this README. Do not add a plugin-root `hooks.json` there — `experimental-hooks/` stays unwired.
+
+**Hooks are packaged here and not installed.** `experimental-hooks/` holds a `sessionStart` force-inject backup. Cursor often drops `additional_context`, and cloud agents skip `sessionStart`, so those files are not referenced by the plugin manifests and are not pasted from Connection. Do not treat them as the notes path.
 
 ## Links
 
