@@ -1,21 +1,34 @@
 {
   "name": "cuebank",
-  "version": "1.0.0",
-  "description": "Keep rules, corrections, and decisions as notes that apply across Cursor chats.",
+  "displayName": "CueBank",
+  "version": "1.1.0",
+  "description": "Saved rules, corrections, and decisions that every new Cursor chat loads first.",
   "author": {
     "name": "CueBank",
     "email": "vimantas1@gmail.com"
   },
+  "publisher": "CueBank",
   "homepage": "https://cuebank.up.railway.app",
+  "repository": "https://github.com/Viss007/cuebank-cursor-plugin",
   "license": "MIT",
+  "logo": "assets/logo.png",
+  "category": "productivity",
   "keywords": [
+    "cuebank",
+    "memory",
     "notes",
     "rules",
     "continuity",
+    "mcp",
+    "oauth"
+  ],
+  "tags": [
     "memory",
-    "productivity",
+    "notes",
+    "rules",
     "mcp"
   ],
-  "logo": "assets/logo.png",
-  "repository": "https://github.com/Viss007/cuebank-cursor-plugin"
+  "rules": "./rules/",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
 }

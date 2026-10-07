@@ -1,36 +1,57 @@
-# CueBank — Cursor plugin
+# CueBank for Cursor
 
-Keep rules, corrections, preferences, and decisions as **notes** that apply in future Cursor chats.
+CueBank keeps the rules, corrections, preferences, and decisions you give your agent as notes. Every new Cursor chat loads them first, so you do not repeat yourself.
 
-**Short:** Keep rules across chats.
+## What you get
 
-## What it does
+- **Connector**: the CueBank MCP server at `https://cuebank-mcp.up.railway.app/mcp` (Streamable HTTP). You sign in with your CueBank account over OAuth.
+- **Rule** (`rules/cuebank.mdc`, always on): load notes with `continuity_recent` before the first reply in a new chat. What you say is the authority. Rules and corrections are saved the same turn. The agent pushes back when a request conflicts with a saved note.
+- **Skills**:
 
-- Connects Cursor to the live CueBank MCP gateway (`https://cuebank-mcp.up.railway.app/mcp`) over **OAuth** (Sign in to your CueBank account).
-- Ships an **alwaysApply** rule that asks the agent to call `continuity_recent` before the first reply in a new chat (notes-first).
-- Tools (account-scoped): `continuity_recent`, `continuity_search`, `continuity_add`, `continuity_update`, `continuity_delete`, `authority_find`, and on Paid seats `support_report`.
+| Skill | Use it to |
+| --- | --- |
+| `cuebank-notes-first` | Load saved notes at the start of a chat or before risky work |
+| `cuebank-save` | Save a new rule, correction, preference, or decision |
+| `cuebank-search` | Find what was decided before |
+| `cuebank-fix-note` | Change the wording of a saved note, or delete it on request |
+| `cuebank-account` | Check plan, usage, and connection, or report a problem |
 
-Billing stays on the CueBank dashboard — this plugin does not sell subscriptions or take payments inside Cursor.
+## Tools
+
+| Tool | What it does |
+| --- | --- |
+| `continuity_recent` | Latest saved rules and notes, newest first |
+| `continuity_search` | Saved notes that match a query |
+| `continuity_add` | Save a new note in your words |
+| `continuity_update` | Change a saved note by id |
+| `continuity_delete` | Delete a saved note by id, only when you ask |
+| `authority_find` | Search CueBank product facts |
+| `account_billing` | Plan and billing status (paid plans) |
+| `account_usage` | Calls in the last 30 days (paid plans) |
+| `account_connection` | Access key status and connected agents, never the key (paid plans) |
+| `support_report` | File a bug or failure report with CueBank support (paid plans) |
+
+Billing is on the CueBank dashboard. The plugin does not take payments in Cursor.
 
 ## Install
 
-### From a marketplace (after publish)
+1. In Cursor, open **Customize** (or the marketplace), find **CueBank**, and choose **Install**.
+2. When Cursor connects the CueBank server, sign in to your CueBank account.
+3. Start a new chat. The agent loads your notes before it replies.
 
-1. Open **Customize** in Cursor.
-2. Find **CueBank** and **Install** (project or user scope).
-3. Complete OAuth when prompted (Sign in to CueBank).
-4. Start a **new** chat so the notes-first rule loads.
+Local install from a clone:
 
-### Local / from this folder
+```bash
+git clone https://github.com/Viss007/cuebank-cursor-plugin.git
+mkdir -p ~/.cursor/plugins/local
+cp -R cuebank-cursor-plugin ~/.cursor/plugins/local/cuebank
+```
 
-1. Copy this directory to `~/.cursor/plugins/local/cuebank` (or symlink a clone into that folder — Cursor only follows symlinks that resolve inside `local/`).
-2. Reload the window (**Developer: Reload Window**).
-3. Confirm CueBank under Customize → MCP / Rules.
-4. Authenticate via OAuth when connecting the MCP server.
+Then run **Developer: Reload Window**. Use a real copy. Cursor ignores symlinks that point outside `~/.cursor/plugins/local/`.
 
-### Manual MCP (without the plugin)
+### Without the plugin
 
-In `.cursor/mcp.json` (or `~/.cursor/mcp.json`):
+Add the server to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` (one project):
 
 ```json
 {
@@ -42,28 +63,27 @@ In `.cursor/mcp.json` (or `~/.cursor/mcp.json`):
 }
 ```
 
-Cursor discovers OAuth from the gateway’s `/.well-known/oauth-*` metadata. Prefer OAuth over pasting an access key.
+To use an access key instead of OAuth, copy the Cursor setup from the **Connection** page on the dashboard.
 
-## Package layout
+## Optional: experimental hooks (not installed)
+
+`experimental-hooks/` holds a `sessionStart` hook that loads notes into the chat as `additional_context`. It is **not installed** with the plugin, and the manifests do not reference it. Cursor often drops `additional_context` from `sessionStart`, and cloud agents skip that hook. The rule above is the supported way to load notes. See `experimental-hooks/README.md` if you want to try it.
+
+## Files
 
 ```
-.cursor-plugin/plugin.json   # Cursor Plugin manifest (marketplace)
-plugin.json                  # Agent Plugins manifest (portable)
-mcp.json / .mcp.json         # Remote Streamable HTTP MCP (OAuth)
-rules/cuebank.mdc            # alwaysApply notes-first rule (ships with install)
-assets/logo.png              # 512×512
-experimental-hooks/          # NOT installed — host-broken sessionStart backup
-README.md
-LICENSE
+.cursor-plugin/plugin.json   Cursor manifest
+.mcp.json                    Cursor connector (OAuth)
+plugin.json, mcp.json        Same package in the portable Agent Plugins format
+rules/cuebank.mdc            Always-on notes-first rule
+skills/*/SKILL.md            Five CueBank skills
+assets/logo.png              512×512 logo
+experimental-hooks/          Optional, not installed
 ```
 
-The notes-first rule ships in `rules/cuebank.mdc`. Buyers install the plugin and sign in. They do not paste a second copy of that rule, and the CueBank Connection page does not ask them to.
+## Privacy and support
 
-This folder (`apps/mcp-gateway/cursor-plugin/` in the CueBank monorepo) is the source of truth. The public repo `https://github.com/Viss007/cuebank-cursor-plugin` should pick up this README. Do not add a plugin-root `hooks.json` there — `experimental-hooks/` stays unwired.
-
-**Hooks are packaged here and not installed.** `experimental-hooks/` holds a `sessionStart` force-inject backup. Cursor often drops `additional_context`, and cloud agents skip `sessionStart`, so those files are not referenced by the plugin manifests and are not pasted from Connection. Do not treat them as the notes path.
-
-## Links
+Notes are stored in your CueBank account. You can review, change, and delete them from the agent or the dashboard. Do not save passwords, keys, or payment details as notes.
 
 | | |
 | --- | --- |
@@ -71,11 +91,3 @@ This folder (`apps/mcp-gateway/cursor-plugin/` in the CueBank monorepo) is the s
 | Support | https://cuebank.up.railway.app/support |
 | Privacy | https://cuebank.up.railway.app/privacy |
 | Terms | https://cuebank.up.railway.app/terms |
-| MCP URL | https://cuebank-mcp.up.railway.app/mcp |
-
-## Submit (human only)
-
-Do **not** submit from an agent. After a public GitHub repo exists:
-
-1. [cursor.directory/plugins/new](https://cursor.directory/plugins/new) — paste the public repo URL (auto-detects `.mcp.json`, `rules/*.mdc`).
-2. [cursor.com/marketplace/publish](https://cursor.com/marketplace/publish) — paste the same repo for official Marketplace review.

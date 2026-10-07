@@ -1,12 +1,10 @@
-# Experimental Cursor hooks (not installed)
+# Experimental hooks (optional, not installed)
 
-This folder is the monorepo copy of the sessionStart force-inject backup. It is not part of the CueBank plugin install.
+These files are not part of the plugin install. The plugin manifests do not reference them, and the CueBank Connection page does not ask you to paste them.
 
-- `plugin.json` and `.cursor-plugin/plugin.json` do not reference these files.
-- The CueBank Connection page does not ask buyers to paste them.
-- Cursor often drops `sessionStart` → `additional_context` (composer-handle race). Cloud agents skip `sessionStart`.
-- Do not claim notes without a `continuity_recent` tool call until an end-to-end prove passes.
+- `hooks.json` runs `session-start.mjs` on `sessionStart`.
+- The script reads `CUEBANK_ACCESS_KEY` (or `CUEBANK_BEARER`), calls `continuity_recent`, and prints the notes as `additional_context`. On any error it prints `{}` and exits 0, so it never blocks a chat.
 
-The notes path that ships with the plugin is `rules/cuebank.mdc`.
+Known limits: Cursor often drops `sessionStart` `additional_context`, and cloud agents skip `sessionStart`. The supported way to load notes is the always-on rule in `rules/cuebank.mdc`.
 
-`hooks.json` and `session-start.mjs` are here so the kit has one owner. Copying them into `.cursor/hooks.json` and `.cursor/hooks/cuebank-session-start.mjs` is a manual experiment, not the buyer setup. The script reads `CUEBANK_ACCESS_KEY` or `CUEBANK_BEARER` and fail-opens (prints `{}`, exit 0) on any error.
+To try it, copy `hooks.json` to `.cursor/hooks.json` and `session-start.mjs` to `.cursor/hooks/cuebank-session-start.mjs`, then set `CUEBANK_ACCESS_KEY`.
