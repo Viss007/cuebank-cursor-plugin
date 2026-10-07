@@ -16,5 +16,6 @@
     "productivity",
     "mcp"
   ],
-  "logo": "assets/logo.png"
+  "logo": "assets/logo.png",
+  "repository": "https://github.com/Viss007/cuebank-cursor-plugin"
 }
