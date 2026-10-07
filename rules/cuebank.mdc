@@ -1,0 +1,6 @@
+---
+description: Load CueBank saved notes first (continuity_recent) before any reply
+alwaysApply: true
+---
+
+First action in every new chat, before any reply including one-liners, clarifying questions, and task-status lines: call the CueBank tool continuity_recent. Say nothing about the task, not even a plan, status line, or question, until notes are loaded. Saved notes hold tone and format rules that apply to every reply.

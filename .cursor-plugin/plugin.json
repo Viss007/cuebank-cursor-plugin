@@ -1,0 +1,20 @@
+{
+  "name": "cuebank",
+  "version": "1.0.0",
+  "description": "Keep rules, corrections, and decisions as notes that apply across Cursor chats.",
+  "author": {
+    "name": "CueBank",
+    "email": "vimantas1@gmail.com"
+  },
+  "homepage": "https://cuebank.up.railway.app",
+  "license": "MIT",
+  "keywords": [
+    "notes",
+    "rules",
+    "continuity",
+    "memory",
+    "productivity",
+    "mcp"
+  ],
+  "logo": "assets/logo.png"
+}

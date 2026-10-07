@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "cuebank",
+  "version": "1.0.0",
+  "description": "Keep rules, corrections, and decisions as notes that apply across chats.",
+  "author": {
+    "name": "CueBank",
+    "email": "vimantas1@gmail.com",
+    "url": "https://cuebank.up.railway.app"
+  },
+  "homepage": "https://cuebank.up.railway.app",
+  "license": "MIT",
+  "keywords": [
+    "notes",
+    "rules",
+    "continuity",
+    "memory",
+    "productivity",
+    "mcp"
+  ]
+}
