@@ -1,22 +1,23 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "cuebank",
-  "version": "1.0.0",
-  "description": "Keep rules, corrections, and decisions as notes that apply across chats.",
+  "version": "1.1.0",
+  "description": "Saved rules, corrections, and decisions that every new chat loads first.",
   "author": {
     "name": "CueBank",
     "email": "vimantas1@gmail.com",
     "url": "https://cuebank.up.railway.app"
   },
   "homepage": "https://cuebank.up.railway.app",
+  "repository": "https://github.com/Viss007/cuebank-cursor-plugin",
   "license": "MIT",
   "keywords": [
+    "cuebank",
+    "memory",
     "notes",
     "rules",
     "continuity",
-    "memory",
-    "productivity",
-    "mcp"
-  ],
-  "repository": "https://github.com/Viss007/cuebank-cursor-plugin"
+    "mcp",
+    "oauth"
+  ]
 }
